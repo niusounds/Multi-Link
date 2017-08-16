@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MultiView</string>
+    <string name="waiting_for_controller">Waiting for controller operation.</string>
+</resources>

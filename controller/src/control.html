@@ -1,0 +1,18 @@
+<div style="position:fixed; bottom:0; left:0; right:0; padding:16px; background: linear-gradient(0deg, #fff, #fff 80%,rgba(255,253,255,0));">
+  <div class="btn-toolbar">
+    <div class="btn-group btn-group-justified" role="group">
+      <a class="btn btn-default" ng-class="{'disabled': $ctrl.disabled}" role="button" href="" ng-click="$ctrl.onSkipPrevious()">
+        <i class="material-icons">skip_previous</i>
+      </a>
+      <a class="btn btn-default" ng-class="{'disabled': $ctrl.disabled}" role="button" href="" ng-click="$ctrl.playing ? $ctrl.onPause() : $ctrl.onPlay()">
+        <i class="material-icons">{{ $ctrl.playing ? 'stop' : 'play_arrow' }}</i>
+      </a>
+      <a class="btn btn-default" ng-class="{'disabled': $ctrl.disabled}" role="button" href="" ng-click="$ctrl.onSkipNext()">
+        <i class="material-icons">skip_next</i>
+      </a>
+    </div>
+  </div>
+  <div class="progress" style="margin-top:8px;margin-bottom:8px;">
+    <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ng-style="{width: ($ctrl.position / $ctrl.duration) * 100 + '%'}">50%</div>
+  </div>
+</div>
