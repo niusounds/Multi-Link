@@ -9,6 +9,8 @@ class App {
     this.udp = udp
     this.selectedVideo = null
     this.playing = false
+    this.ended = false // 最後まで再生終了した時にtrueになる
+    this.startTime = 0 // 再生開始した時間
     this.devices = []
     this.videos = []
   }
@@ -57,6 +59,7 @@ class App {
         // 動画が終わったはずの時間になったら再生を止める
         if (this.selectedVideo.length <= this.estimatedCurrentPosition) {
           this.playing = false
+          this.ended = true
         }
 
         // ローカルネットワークにブロードキャスト
@@ -69,7 +72,11 @@ class App {
    * 予想される動画の現在位置を返す。
    */
   get estimatedCurrentPosition() {
-    return this.playing ? Date.now() - this.startTime : 0
+    return this.playing
+      ? Date.now() - this.startTime
+      : this.ended && this.selectedVideo
+        ? this.selectedVideo.length
+        : 0
   }
 
   /**
@@ -95,6 +102,7 @@ class App {
     // 再生開始時間を記憶する
     if (this.playing) {
       this.startTime = Date.now()
+      this.ended = false
     }
 
     this.syncDevices()
@@ -140,6 +148,7 @@ class App {
 
       if (this.playing) {
         this.startTime = Date.now() // 再生中なら、再生開始時間をリセットする
+        this.ended = false
       }
       // this.playing = false
       this.syncDevices()
@@ -201,6 +210,7 @@ angular.module('App', [])
   })
   .component('control', {
     templateUrl: 'control.html',
+    controller: require('./control'),
     bindings: {
       // inputs
       playing: '<',
