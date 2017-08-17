@@ -5,12 +5,15 @@
   "scripts": {
     "postinstall": "cd src && npm install",
     "start": "electron src",
+    "build:win64": "electron-packager src --platform=win32 --arch=x64 --electron-version=1.7.5 --asar=true --overwrite=true",
+    "build:osx": "electron-packager src --platform=darwin --arch=x64 --electron-version=1.7.5 --asar=true --overwrite=true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^1.7.5"
+    "electron": "^1.7.5",
+    "electron-packager": "^8.7.2"
   }
 }
