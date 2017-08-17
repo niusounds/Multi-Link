@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 
 const path = require('path')
 const url = require('url')
@@ -7,9 +7,16 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+function inDebug() {
+  return process.title === 'npm'
+}
+
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1440, height: 720 })
+  mainWindow = new BrowserWindow({
+    width: inDebug() ? 1440 : 1280,
+    height: 720
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -19,7 +26,9 @@ function createWindow() {
   }))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  if (inDebug()) {
+    mainWindow.webContents.openDevTools()
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -28,6 +37,10 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  if (!inDebug()) {
+    Menu.setApplicationMenu(null)
+  }
 }
 
 // This method will be called when Electron has finished
