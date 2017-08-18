@@ -174,7 +174,7 @@ angular.module('App', [])
   .factory('udp', () => {
 
     let UDPInterface = require('./UDPInterface')
-    let udp = new UDPInterface('192.168.10.255', 50201)
+    let udp = new UDPInterface(50201)
     udp.start()
 
     window.addEventListener('beforeunload', (e) => {

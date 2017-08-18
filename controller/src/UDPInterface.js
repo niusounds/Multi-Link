@@ -1,23 +1,20 @@
-const PORT = 50201
 const TYPE_PING = 0
-const broadcastAddress = '192.168.10.255'
 
 const EventEmitter = require('events');
 const dgram = require('dgram');
+const getBroadcastAddresses = require('./getBroadcastAddresses')
 
 module.exports = class UDPInterface extends EventEmitter {
 
   /**
-   * @param {String} broadcastAddress ブロードキャスト送信に使用するIPアドレス 
    * @param {Number} port メッセージを送る先のポート番号
    */
-  constructor(broadcastAddress, port) {
+  constructor(port) {
 
-    if (!broadcastAddress || !port)
-      throw new Error('broadcastAddress and port must be specified')
+    if (!port)
+      throw new Error('port must be specified')
 
     super()
-    this.broadcastAddress = broadcastAddress
     this.port = port
   }
 
@@ -71,15 +68,26 @@ module.exports = class UDPInterface extends EventEmitter {
    * @param {String|Buffer} msg 
    */
   async send(msg) {
-    return new Promise((resolve, reject) => {
-      this.socket.send(msg, this.port, this.broadcastAddress, (err, bytes) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(bytes)
-        }
-      });
+
+    let port = this.port
+    let broadcastAddresses = getBroadcastAddresses()
+
+    // 取得した全てのブロードキャストアドレスにパケットを送信する
+    let promises = broadcastAddresses.map(broadcastAddress => {
+
+      return new Promise((resolve, reject) => {
+        this.socket.send(msg, port, broadcastAddress, (err, bytes) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(bytes)
+          }
+        });
+      })
+
     })
+
+    return Promise.all(promises)
   }
 
   /**
@@ -90,7 +98,7 @@ module.exports = class UDPInterface extends EventEmitter {
 
     // JSON文字列に変換
     let msg = JSON.stringify(data)
-    return this.send(msg, this.port, this.broadcastAddress)
+    return this.send(msg)
 
   }
 
