@@ -8,13 +8,9 @@ import com.eje_c.udpmultiview.data.Message
 import com.eje_c.udpmultiview.data.Type
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.joml.Quaternionf
 import org.meganekkovr.FrameInput
 import org.meganekkovr.HeadTransform
 import org.meganekkovr.MeganekkoApp
-import java.net.SocketAddress
-import java.nio.ByteBuffer
-import java.nio.channels.DatagramChannel
 import java.util.*
 
 /**
@@ -22,21 +18,7 @@ import java.util.*
  */
 class App : MeganekkoApp() {
 
-    /**
-     * 最後にUDPメッセージを受信した時の相手アドレスを保持する。
-     * ヘッドトラッキングや端末情報はここ宛に送られる。
-     */
-    private var remote: SocketAddress? = null
-
-    /**
-     * UDPソケット。
-     */
-    private lateinit var channel: DatagramChannel
-
-    /**
-     * UDP送信時に使用するバッファ。このバッファへのアクセスは必ずGLスレッドから行う必要がある。
-     */
-    private val buffer = ByteBuffer.allocate(128 * 1024)
+    private lateinit var udpSender: UDPSender
 
     /**
      * trueの時かつUDP送信先がわかっている場合はヘッドトラッキング情報を毎フレーム送信する。
@@ -56,8 +38,7 @@ class App : MeganekkoApp() {
         EventBus.getDefault().register(this)
 
         // UDP送信準備
-        channel = DatagramChannel.open()
-        channel.configureBlocking(false)
+        udpSender = UDPSender()
     }
 
     /**
@@ -66,30 +47,11 @@ class App : MeganekkoApp() {
     override fun update(frame: FrameInput) {
 
         // ヘッドトラッキング情報の送信
-        if (sendHeadTransform && remote != null) {
-            synchronized(this) {
-                if (sendHeadTransform && remote != null) {
-                    val q = HeadTransform.getInstance().quaternion
-                    send(q)
-                }
-            }
+        if (sendHeadTransform) {
+            udpSender.send(HeadTransform.getInstance().quaternion)
         }
 
         super.update(frame)
-    }
-
-    /**
-     * ヘッドトラッキング情報をコントローラーに送信する。
-     */
-    private fun send(q: Quaternionf) {
-        buffer.clear()
-        val f = buffer.asFloatBuffer()
-        f.put(q.x)
-        f.put(q.y)
-        f.put(q.z)
-        f.put(q.w)
-        f.flip()
-        channel.send(buffer, remote)
     }
 
     /**
@@ -99,9 +61,7 @@ class App : MeganekkoApp() {
     fun onReceiveState(event: ControlMessageReceiveEvent) {
 
         // 親機のアドレスを保存
-        synchronized(this) {
-            remote = event.remote
-        }
+        udpSender.remote = event.remote
 
         // message.type によって処理を分岐
         when (Type.fromInt(event.message.getInt("type"))) {
@@ -124,10 +84,7 @@ class App : MeganekkoApp() {
         Handler(Looper.getMainLooper()).postDelayed({
             runOnGlThread {
                 val message = Message(Type.Ping.value, DeviceInfo.get(context))
-                buffer.clear()
-                buffer.put(message.serialize())
-                buffer.flip()
-                channel.send(buffer, remote)
+                udpSender.send(message)
             }
         }, Random().nextInt(3000).toLong())
     }
