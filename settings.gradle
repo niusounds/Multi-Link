@@ -1,1 +1,1 @@
-include ':app', ':cardboard'
+include ':app', ':cardboard', ':common'

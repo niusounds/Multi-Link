@@ -20,8 +20,7 @@ android {
 }
 
 dependencies {
+    compile project(':common')
     compile 'org.meganekkovr:meganekko:3.1.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.code.gson:gson:2.8.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

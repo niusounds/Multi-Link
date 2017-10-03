@@ -1,7 +1,10 @@
-package com.eje_c.udpmultiview
+package com.eje_c.udpmultiview.gearvr
 
 import android.os.Handler
 import android.os.Looper
+import com.eje_c.udpmultiview.ControlMessageReceiveEvent
+import com.eje_c.udpmultiview.R
+import com.eje_c.udpmultiview.UDPSender
 import com.eje_c.udpmultiview.data.ControlMessage
 import com.eje_c.udpmultiview.data.DeviceInfo
 import com.eje_c.udpmultiview.data.Message
@@ -48,7 +51,8 @@ class App : MeganekkoApp() {
 
         // ヘッドトラッキング情報の送信
         if (sendHeadTransform) {
-            udpSender.send(HeadTransform.getInstance().quaternion)
+            val quaternion = HeadTransform.getInstance().quaternion
+            udpSender.send(quaternion.x, quaternion.y, quaternion.z, quaternion.w)
         }
 
         super.update(frame)

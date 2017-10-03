@@ -1,4 +1,4 @@
-package com.eje_c.udpmultiview
+package com.eje_c.udpmultiview.gearvr
 
 import android.content.ComponentName
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.eje_c.udpmultiview.UDPReceiverService
 
 import org.meganekkovr.GearVRActivity
 

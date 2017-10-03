@@ -1,8 +1,9 @@
-package com.eje_c.udpmultiview
+package com.eje_c.udpmultiview.gearvr
 
 import android.media.MediaPlayer
 import android.os.Environment
 import android.util.Log
+import com.eje_c.udpmultiview.R
 import com.eje_c.udpmultiview.data.ControlMessage
 import org.meganekkovr.Entity
 import org.meganekkovr.Scene

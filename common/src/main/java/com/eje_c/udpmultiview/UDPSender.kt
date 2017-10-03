@@ -1,7 +1,6 @@
 package com.eje_c.udpmultiview
 
 import com.eje_c.udpmultiview.data.Message
-import org.joml.Quaternionf
 import java.net.SocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
@@ -32,15 +31,33 @@ class UDPSender(
     /**
      * ヘッドトラッキング情報を送信する。
      */
-    fun send(q: Quaternionf) {
+    fun send(q: FloatArray) {
         if (remote != null) {
             buffer.clear()
 
             val f = buffer.asFloatBuffer()
-            f.put(q.x)
-            f.put(q.y)
-            f.put(q.z)
-            f.put(q.w)
+            f.put(q[0])
+            f.put(q[1])
+            f.put(q[2])
+            f.put(q[3])
+            f.flip()
+
+            channel.send(buffer, remote)
+        }
+    }
+
+    /**
+     * ヘッドトラッキング情報を送信する。
+     */
+    fun send(x: Float, y: Float, z: Float, w: Float) {
+        if (remote != null) {
+            buffer.clear()
+
+            val f = buffer.asFloatBuffer()
+            f.put(x)
+            f.put(y)
+            f.put(z)
+            f.put(w)
             f.flip()
 
             channel.send(buffer, remote)
