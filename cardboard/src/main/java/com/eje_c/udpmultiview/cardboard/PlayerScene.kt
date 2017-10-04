@@ -1,8 +1,6 @@
-package com.eje_c.udpmultiview
+package com.eje_c.udpmultiview.cardboard
 
-import com.eje_c.udpmultiview.cardboard.R
-import com.eje_c.udpmultiview.cardboard.VRSphere
-import com.eje_c.udpmultiview.cardboard.ViewUtil
+import com.eje_c.udpmultiview.BasePlayer
 import com.eje_c.udpmultiview.data.ControlMessage
 import org.rajawali3d.Object3D
 import org.rajawali3d.math.vector.Vector3

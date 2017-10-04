@@ -3,7 +3,6 @@ package com.eje_c.udpmultiview.cardboard
 import android.content.Context
 import com.eje_c.udpmultiview.IMain
 import com.eje_c.udpmultiview.MultiViewApp
-import com.eje_c.udpmultiview.PlayerScene
 import com.eje_c.udpmultiview.data.ControlMessage
 import com.google.vr.sdk.base.HeadTransform
 
