@@ -24,6 +24,7 @@ class PlayerScene(renderer: Renderer) : Scene(renderer) {
         waiting.position = Vector3(0.0, 0.0, -10.0)
         addChild(waiting)
         screen = VRSphere()
+        screen.isVisible = false
         addChild(screen)
 
         screen.bindMediaPlayer(player.mediaPlayer)
