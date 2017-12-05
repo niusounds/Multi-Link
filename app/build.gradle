@@ -20,7 +20,9 @@ android {
 }
 
 dependencies {
-    compile project(':common')
-    compile 'org.meganekkovr:meganekko:3.1.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation project(':common')
+    implementation 'org.meganekkovr:meganekko:3.2.1'
+    implementation 'org.joml:joml:1.9.2'
+    implementation 'com.android.support:support-core-utils:26.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
