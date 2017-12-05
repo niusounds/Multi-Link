@@ -6,7 +6,7 @@ import com.google.gson.Gson
  * JSON文字列のシリアライズとデシリアライズを行う。
  */
 object JSON {
-    private val gson = Gson()
+    val gson = Gson()
 
     /**
      * オブジェクトをJSON文字列へ変換する。
@@ -16,5 +16,5 @@ object JSON {
     /**
      * JSON文字列からクラスのインスタンスを作成する。
      */
-    fun <T> parse(json: String, clazz: Class<T>): T = gson.fromJson(json, clazz)
+    inline fun <reified T> parse(json: String): T = gson.fromJson(json, T::class.java)
 }

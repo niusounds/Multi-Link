@@ -20,7 +20,7 @@ data class DeviceInfo(
 
         fun get(context: Context): DeviceInfo {
 
-            val telephonyManager = context.getSystemService(TelephonyManager::class.java)
+            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             val imei = telephonyManager.deviceId
             val videoList = getVRVideos(context)
 
@@ -33,41 +33,52 @@ data class DeviceInfo(
         private fun getVRVideos(context: Context): Array<VideoInfo> {
 
             // 端末内の動画を取得
-            val cursor: Cursor? = MediaStore.Video.query(context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(
-                    MediaStore.Video.VideoColumns.TITLE, // 0
-                    MediaStore.Video.VideoColumns.DATA, // 1
+            val cursorOrNull: Cursor? = MediaStore.Video.query(context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(
+                    MediaStore.Video.VideoColumns.TITLE,    // 0
+                    MediaStore.Video.VideoColumns.DATA,     // 1
                     MediaStore.Video.VideoColumns.DURATION, // 2
-                    MediaStore.Video.VideoColumns.WIDTH, // 3
-                    MediaStore.Video.VideoColumns.HEIGHT // 4
+                    MediaStore.Video.VideoColumns.WIDTH,    // 3
+                    MediaStore.Video.VideoColumns.HEIGHT    // 4
             ))
 
-            // 結果を格納するList
-            val videoList = mutableListOf<VideoInfo>()
+            cursorOrNull?.use { cursor ->
 
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
+                return cursor.map {
 
-                    val width = cursor.getInt(3)
-                    val height = cursor.getInt(3)
+                    val width = getInt(3)
+                    val height = getInt(3)
 
                     // 2:1 または 1:1 の動画のみフィルタリング
                     if (width == height * 2 || width == height) {
 
-                        val name = cursor.getString(0)
-                        val path = File(cursor.getString(1)).relativeTo(Environment.getExternalStorageDirectory()).path
-                        val length = cursor.getLong(2)
+                        val name = getString(0)
+                        val path = File(getString(1)).relativeTo(Environment.getExternalStorageDirectory()).path
+                        val length = getLong(2)
 
-                        videoList.add(VideoInfo(
-                                name,
-                                path,
-                                length)
-                        )
+                        VideoInfo(name, path, length)
+
+                    } else {
+                        null
                     }
-                }
-                cursor.close()
+
+                }.toTypedArray()
             }
 
-            return videoList.toTypedArray()
+            return emptyArray()
         }
     }
+}
+
+/**
+ * Create List from Cursor. [callback] is called per row.
+ */
+fun <T> Cursor.map(callback: Cursor.() -> T?): List<T> {
+
+    val result = mutableListOf<T>()
+
+    while (moveToNext()) {
+        result += callback() ?: continue
+    }
+
+    return result
 }
