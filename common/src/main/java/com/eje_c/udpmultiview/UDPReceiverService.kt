@@ -37,7 +37,7 @@ class UDPReceiverService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        val wifi = getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifi = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         lock = wifi.createMulticastLock("lock")
         lock.acquire()
 
