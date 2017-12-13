@@ -17,6 +17,6 @@ interface VideoDao {
     @Query("SELECT *, COUNT(*) as count FROM VideoEntity WHERE updated_at > :updateTimeThreshold GROUP BY path HAVING count = (SELECT COUNT(*) FROM DeviceEntity WHERE updated_at > :updateTimeThreshold)")
     fun query(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_MILLIS): LiveData<List<VideoEntity>>
 
-    @Query("DELETE FROM VideoEntity WHERE updated_at > :updateTimeThreshold")
+    @Query("DELETE FROM VideoEntity WHERE updated_at < :updateTimeThreshold")
     fun clear(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_MILLIS)
 }
