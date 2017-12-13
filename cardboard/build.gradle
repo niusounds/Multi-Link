@@ -6,7 +6,7 @@ android {
     buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId 'com.eje_c.udpmultiview.cardboard'
+        applicationId 'com.eje_c.multilink.cardboard'
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 1

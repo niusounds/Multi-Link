@@ -7,7 +7,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId 'com.eje_c.udpmultiview.controller'
+        applicationId 'com.eje_c.multilink.controller'
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1

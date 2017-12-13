@@ -1,4 +1,4 @@
-<scene class="com.eje_c.udpmultiview.gearvr.PlayerScene">
+<scene class="com.eje_c.multilink.gearvr.PlayerScene">
 
     <entity id="@+id/waiting">
 

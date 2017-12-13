@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.eje_c.udpmultiview.controller.PlayerActivity">
+    tools:context="com.eje_c.multilink.controller.PlayerActivity">
 
     <com.google.vr.sdk.widgets.video.VrVideoView
         android:id="@+id/vrVideoView"
