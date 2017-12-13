@@ -29,7 +29,7 @@ class UdpSocketService : Service() {
         lock = wifi.createMulticastLock("lock")
         lock.acquire()
 
-        udpSocket = UdpSocket(port = 50201)
+        udpSocket = UdpSocket(port = MultiLinkUdpMessenger.broadcastPort)
 
     }
 

@@ -12,7 +12,7 @@ import org.json.JSONObject
  */
 object MultiLinkUdpMessenger {
 
-    const val TAG = "MultiLinkUdpMessenger"
+    private const val TAG = "MultiLinkUdpMessenger"
 
     private lateinit var udpSocket: UdpSocket
 
@@ -61,6 +61,9 @@ object MultiLinkUdpMessenger {
         }
     }
 
+    /**
+     * Send ping message.
+     */
     fun ping() {
 
         val data = Message(type = 0).serialize()
@@ -68,6 +71,9 @@ object MultiLinkUdpMessenger {
         udpSocket.broadcast(data, broadcastPort)
     }
 
+    /**
+     * Send control message.
+     */
     fun sendControlMessage(controlMessage: ControlMessage) {
 
         val data = Message(type = 1, data = controlMessage).serialize()
@@ -75,6 +81,9 @@ object MultiLinkUdpMessenger {
         udpSocket.broadcast(data, broadcastPort)
     }
 
+    /**
+     * Close UDP socket.
+     */
     fun release() {
         udpSocket.release()
     }

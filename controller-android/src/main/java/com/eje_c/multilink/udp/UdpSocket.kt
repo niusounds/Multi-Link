@@ -30,6 +30,7 @@ class UdpSocket(port: Int = 0, receiveBufferCapacity: Int = 128 * 1024) {
         channel.socket().bind(InetSocketAddress(port))
         channel.configureBlocking(false)
 
+        // Start background receiving data thread
         executor.submit {
 
             val selector = Selector.open()
@@ -43,24 +44,6 @@ class UdpSocket(port: Int = 0, receiveBufferCapacity: Int = 128 * 1024) {
                     // Block until some data is coming from remote
                     selector.select()
                     val iterator = selector.selectedKeys().iterator()
-
-//                    iterator.consumeAll { key ->
-//
-//                        if (!key.isValid) {
-//                            return@consumeAll
-//                        }
-//
-//                        if (key.isReadable) {
-//
-//                            // Read packet
-//                            val buffer = ByteBuffer.allocate(receiveBufferCapacity)
-//                            channel.receive(buffer)
-//                            buffer.flip()
-//
-//                            onReceive?.invoke(buffer)
-//
-//                        }
-//                    }
 
                     while (iterator.hasNext()) {
                         val key = iterator.next()
@@ -91,11 +74,15 @@ class UdpSocket(port: Int = 0, receiveBufferCapacity: Int = 128 * 1024) {
                 }
 
             } catch (e: Exception) {
+                // When channel is closed or something wrong
                 e.printStackTrace()
             }
         }
     }
 
+    /**
+     * Close socket and shutdown background receiving thread.
+     */
     fun release() {
 
         released = true
@@ -103,6 +90,9 @@ class UdpSocket(port: Int = 0, receiveBufferCapacity: Int = 128 * 1024) {
         executor.shutdown()
     }
 
+    /**
+     * Send [data] to [remote]. Sub set of [data] can be sent with specifying [offset] and [length].
+     */
     fun send(data: ByteArray, remote: SocketAddress, offset: Int = 0, length: Int = data.size - offset) {
 
         val buffer = ByteBuffer.wrap(data, offset, length)
@@ -113,6 +103,9 @@ class UdpSocket(port: Int = 0, receiveBufferCapacity: Int = 128 * 1024) {
 
     }
 
+    /**
+     * Send [data] with all local network hosts. Sub set of [data] can be sent with specifying [offset] and [length].
+     */
     fun broadcast(data: ByteArray, port: Int, offset: Int = 0, length: Int = data.size - offset) {
 
         val remote = InetSocketAddress(getBroadcastAddress(), port)
