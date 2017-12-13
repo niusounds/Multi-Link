@@ -1,1 +1,1 @@
-include ':app', ':cardboard', ':common'
+include ':app', ':cardboard', ':common', ':controller-android'
