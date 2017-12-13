@@ -3,7 +3,6 @@
     package="com.eje_c.multilink.controller">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -31,8 +30,6 @@
             android:configChanges="orientation|screenLayout|screenSize|keyboard|keyboardHidden"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
-
-        <service android:name="com.eje_c.multilink.udp.UdpSocketService" />
 
     </application>
 

@@ -1,1 +1,1 @@
-include ':app', ':cardboard', ':common', ':controller-android'
+include ':viewer-gearvr', ':viewer-googlevr', ':viewer-common', ':controller-android', ':common-messaging', ':common-json'
