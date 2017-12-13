@@ -26,8 +26,13 @@ open class VideosFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         App.db.videoDao().query().observe(this, Observer<List<VideoEntity>> { data ->
+
             if (data != null) {
+
+                // Show videos
                 adapter.list = data
+
+                // Show count of videos
                 videoCount.text = data.size.toString()
             }
         })

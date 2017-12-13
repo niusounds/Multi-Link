@@ -12,12 +12,21 @@ import com.eje_c.multilink.UPDATE_TIME_THRESHOLD_MILLIS
 @Dao
 interface DeviceDao {
 
+    /**
+     * Create device entity.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun create(deviceEntity: DeviceEntity)
 
+    /**
+     * Get devices which are recently updated.
+     */
     @Query("SELECT * FROM DeviceEntity WHERE updated_at > :updateTimeThreshold")
     fun query(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_MILLIS): LiveData<List<DeviceEntity>>
 
+    /**
+     * Delete devices which are not recently updated.
+     */
     @Query("DELETE FROM DeviceEntity WHERE updated_at < :updateTimeThreshold")
     fun clear(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_FOR_CLEAR)
 

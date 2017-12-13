@@ -16,7 +16,7 @@ import org.androidannotations.annotations.*
 import org.androidannotations.api.BackgroundExecutor
 
 /**
- * Created by niuso on 2017/12/12.
+ * Player activity. Control VR devices on this screen.
  */
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_player)
@@ -74,13 +74,23 @@ open class PlayerActivity : AppCompatActivity() {
 
         }
 
+    /**
+     * Extra parameter from intent.
+     */
     @Extra
     @JvmField
-    var videoPath: String = "Oculus/360Videos/video.mp4"
+    var videoPath: String = ""
+
+    /**
+     * Extra parameter from intent.
+     */
     @Extra
     @JvmField
     var videoLength: Long = 0
 
+    /**
+     * Play/Pause button on right bottom.
+     */
     @ViewById
     lateinit var playPauseButton: FloatingActionButton
 
@@ -148,6 +158,9 @@ open class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    /**
+     * Called when [playPauseButton] is tapped.
+     */
     @Click
     fun playPauseButtonClicked() {
 
@@ -155,9 +168,11 @@ open class PlayerActivity : AppCompatActivity() {
         playing = !playing
     }
 
+    /**
+     * Running while activity is in foreground. Updates UI periodically.
+     */
     @Background(id = "periodicUiUpdate")
     open fun periodicUiUpdate() {
-
 
         try {
 
@@ -166,7 +181,7 @@ open class PlayerActivity : AppCompatActivity() {
             while (!Thread.interrupted()) {
 
                 val now = SystemClock.uptimeMillis()
-                val dt = now - prevNow
+                val deltaTime = now - prevNow
 
                 if (playInController) {
 
@@ -175,7 +190,7 @@ open class PlayerActivity : AppCompatActivity() {
                 } else {
 
                     if (controlMessage.playing) {
-                        controlMessage.position += dt
+                        controlMessage.position += deltaTime
 
                         // Stop playing when position is over than length
                         if (controlMessage.position > videoLength) {
@@ -199,32 +214,45 @@ open class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Pause video.
+     */
     @UiThread(propagation = UiThread.Propagation.REUSE)
     open fun pause() {
         playing = false
     }
 
+    /**
+     * Start playing video.
+     */
     @UiThread(propagation = UiThread.Propagation.REUSE)
     open fun play() {
         playing = true
     }
 
+    /**
+     * Seek to position. [position] is in milliseconds.
+     */
     @UiThread(propagation = UiThread.Propagation.REUSE)
     open fun seekTo(position: Long) {
         currentPosition = position
     }
 
-    @UiThread
+    /**
+     * Apply current position to [seekBar].
+     */
+    @UiThread(propagation = UiThread.Propagation.REUSE)
     open fun updateSeekBar() {
-
         seekBar.progress = controlMessage.position.toInt()
-
     }
 
+    /**
+     * Called when [seekBar]'s progress is changed by user or program.
+     */
     @SeekBarProgressChange(R.id.seekBar)
     fun onSeekBarChange(progress: Int, fromUser: Boolean) {
         if (fromUser) {
-            currentPosition = progress.toLong()
+            seekTo(progress.toLong())
         }
     }
 

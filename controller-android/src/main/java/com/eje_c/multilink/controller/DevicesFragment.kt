@@ -29,8 +29,13 @@ open class DevicesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         App.db.deviceDao().query().observe(this, Observer<List<DeviceEntity>> { data ->
+
             if (data != null) {
+
+                // Show devices
                 adapter.list = data
+
+                // Show count of devices
                 deviceCount.text = data.size.toString()
             }
         })
@@ -39,9 +44,12 @@ open class DevicesFragment : Fragment() {
     @Click
     fun reloadButton() {
         thread {
+
+            // Clear old data
             App.db.deviceDao().clear()
             App.db.videoDao().clear()
 
+            // Query VR device information on network
             MultiLinkUdpMessenger.ping()
         }
     }

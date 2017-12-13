@@ -67,25 +67,24 @@ class MainActivity : AppCompatActivity() {
 
         // Save device info to local DB
         val deviceEntity = DeviceEntity().apply {
-            imei = deviceInfo.imei!!
+            imei = deviceInfo.imei
             name = deviceInfo.name
             updatedAt = now
         }
         App.db.deviceDao().create(deviceEntity)
 
         // Save video info to local DB
-        deviceInfo.videos?.let { videos ->
+        deviceInfo.videos.let { videos ->
 
-            val videoEntities = videos.filter { it.path != null }
-                    .map { video ->
-                        VideoEntity().apply {
-                            deviceImei = deviceInfo.imei!!
-                            path = video.path!!
-                            name = video.name
-                            length = video.length
-                            updatedAt = now
-                        }
-                    }
+            val videoEntities = videos.map { video ->
+                VideoEntity().apply {
+                    deviceImei = deviceInfo.imei
+                    path = video.path
+                    name = video.name
+                    length = video.length
+                    updatedAt = now
+                }
+            }
 
             App.db.videoDao().create(videoEntities)
         }
