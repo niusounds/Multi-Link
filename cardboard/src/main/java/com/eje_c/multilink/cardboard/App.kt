@@ -2,13 +2,13 @@ package com.eje_c.multilink.cardboard
 
 import android.content.Context
 import com.eje_c.multilink.IMain
-import com.eje_c.multilink.MultiViewApp
+import com.eje_c.multilink.MultiLinkApp
 import com.eje_c.multilink.data.ControlMessage
 import com.google.vr.sdk.base.HeadTransform
 
 class App(context: Context) : VRRenderer(context), IMain {
 
-    private lateinit var app: MultiViewApp
+    private lateinit var app: MultiLinkApp
     private lateinit var playerScene: PlayerScene
     private val quaternion = FloatArray(4)
 
@@ -17,7 +17,7 @@ class App(context: Context) : VRRenderer(context), IMain {
      */
     override fun init() {
 
-        app = MultiViewApp(context, this)
+        app = MultiLinkApp(context, this)
 
         // シーンを作成
         playerScene = PlayerScene(this)

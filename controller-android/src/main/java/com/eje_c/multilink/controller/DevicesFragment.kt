@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
 import com.eje_c.multilink.db.DeviceEntity
-import com.eje_c.multilink.udp.MultiViewUdpMessenger
+import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EFragment
@@ -42,7 +42,7 @@ open class DevicesFragment : Fragment() {
             App.db.deviceDao().clear()
             App.db.videoDao().clear()
 
-            MultiViewUdpMessenger.ping()
+            MultiLinkUdpMessenger.ping()
         }
     }
 }

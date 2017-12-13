@@ -15,7 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import com.eje_c.multilink.data.DeviceInfo
 import com.eje_c.multilink.db.DeviceEntity
 import com.eje_c.multilink.db.VideoEntity
-import com.eje_c.multilink.udp.MultiViewUdpMessenger
+import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import com.eje_c.multilink.udp.UdpSocketService
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
 
             val udpSocket = (binder as UdpSocketService.LocalBinder).service.udpSocket
-            MultiViewUdpMessenger.initialize(udpSocket)
+            MultiLinkUdpMessenger.initialize(udpSocket)
 
-            MultiViewUdpMessenger.onReceivePingResponse += { deviceInfo ->
+            MultiLinkUdpMessenger.onReceivePingResponse += { deviceInfo ->
 
                 // Check illegal data and process
                 if (deviceInfo.imei != null) {
@@ -48,13 +48,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            MultiViewUdpMessenger.ping()
+            MultiLinkUdpMessenger.ping()
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
 
             // Clear references
-            MultiViewUdpMessenger.release()
+            MultiLinkUdpMessenger.release()
         }
     }
 

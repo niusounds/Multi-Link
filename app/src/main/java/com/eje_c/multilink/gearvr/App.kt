@@ -1,7 +1,7 @@
 package com.eje_c.multilink.gearvr
 
 import com.eje_c.multilink.IMain
-import com.eje_c.multilink.MultiViewApp
+import com.eje_c.multilink.MultiLinkApp
 import com.eje_c.multilink.data.ControlMessage
 import org.meganekkovr.FrameInput
 import org.meganekkovr.HeadTransform
@@ -12,7 +12,7 @@ import org.meganekkovr.MeganekkoApp
  */
 class App : MeganekkoApp(), IMain {
 
-    private lateinit var app: MultiViewApp
+    private lateinit var app: MultiLinkApp
     private lateinit var playerScene: PlayerScene
 
     /**
@@ -21,7 +21,7 @@ class App : MeganekkoApp(), IMain {
     override fun init() {
         super.init()
 
-        app = MultiViewApp(context, this)
+        app = MultiLinkApp(context, this)
 
         // シーンを読み込む
         playerScene = setSceneFromXml(R.xml.scene) as PlayerScene

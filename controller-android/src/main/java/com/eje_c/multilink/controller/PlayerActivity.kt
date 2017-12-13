@@ -9,7 +9,7 @@ import android.util.Log
 import android.view.View
 import com.eje_c.multilink.data.ControlMessage
 import com.eje_c.multilink.fromExternal
-import com.eje_c.multilink.udp.MultiViewUdpMessenger
+import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import com.google.vr.sdk.widgets.video.VrVideoEventListener
 import kotlinx.android.synthetic.main.activity_player.*
 import org.androidannotations.annotations.*
@@ -43,7 +43,7 @@ open class PlayerActivity : AppCompatActivity() {
 
             // Sync to VR devices
             controlMessage.position = value
-            MultiViewUdpMessenger.sendControlMessage(controlMessage)
+            MultiLinkUdpMessenger.sendControlMessage(controlMessage)
 
             if (playInController) {
                 vrVideoView.seekTo(value)
@@ -61,7 +61,7 @@ open class PlayerActivity : AppCompatActivity() {
 
             // Sync to VR devices
             controlMessage.playing = value
-            MultiViewUdpMessenger.sendControlMessage(controlMessage)
+            MultiLinkUdpMessenger.sendControlMessage(controlMessage)
 
             if (value) {
                 vrVideoView.playVideo()
@@ -89,7 +89,7 @@ open class PlayerActivity : AppCompatActivity() {
 
         // Reset VR devices state
         controlMessage.path = videoPath
-        MultiViewUdpMessenger.sendControlMessage(controlMessage)
+        MultiLinkUdpMessenger.sendControlMessage(controlMessage)
 
         seekBar.max = videoLength.toInt()
 
@@ -187,7 +187,7 @@ open class PlayerActivity : AppCompatActivity() {
                 }
 
                 updateSeekBar()
-                MultiViewUdpMessenger.sendControlMessage(controlMessage)
+                MultiLinkUdpMessenger.sendControlMessage(controlMessage)
 
                 prevNow = now
 

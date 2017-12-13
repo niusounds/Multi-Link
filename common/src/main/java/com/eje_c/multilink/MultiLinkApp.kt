@@ -14,7 +14,7 @@ import java.util.*
 /**
  * アプリケーションのメインクラス。
  */
-class MultiViewApp(val context: Context, val main: IMain) {
+class MultiLinkApp(val context: Context, val main: IMain) {
 
     private val udpSender = UDPSender()
 

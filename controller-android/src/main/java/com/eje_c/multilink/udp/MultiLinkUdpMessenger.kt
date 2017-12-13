@@ -8,11 +8,11 @@ import com.eje_c.multilink.data.Message
 import org.json.JSONObject
 
 /**
- * High level interface for MultiView App.
+ * High level interface for Multi-Link UDP messaging.
  */
-object MultiViewUdpMessenger {
+object MultiLinkUdpMessenger {
 
-    const val TAG = "MultiViewUdpMessenger"
+    const val TAG = "MultiLinkUdpMessenger"
 
     private lateinit var udpSocket: UdpSocket
 
