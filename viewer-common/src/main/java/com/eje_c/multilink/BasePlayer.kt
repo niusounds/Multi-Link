@@ -21,8 +21,8 @@ class BasePlayer(context: Context) {
         private const val SEEK_THRESHOLD = 1000 // コントロールメッセージのpositionプロパティと現在位置がこの値以上離れていたらシークする
     }
 
-    val mediaPlayer: Player = MediaPlayerImpl(context, MediaPlayer())
-    var currentPath: String? = null
+    private val mediaPlayer: Player = MediaPlayerImpl(context, MediaPlayer())
+    private var currentPath: String? = null
 
     var onStartPlaying: () -> Unit = {}
     var onStopPlaying: () -> Unit = {}
@@ -42,8 +42,13 @@ class BasePlayer(context: Context) {
         mediaPlayer.setOutput(surface)
     }
 
+    /**
+     * Returns true if video is stereo.
+     */
     val isStereo: Boolean
-        get() = mediaPlayer.videoWidth == mediaPlayer.videoHeight
+        get() = mediaPlayer.videoWidth != 0
+                && mediaPlayer.videoHeight != 0
+                && mediaPlayer.videoWidth == mediaPlayer.videoHeight
 
     /**
      * プレイヤーの状態を更新する。
