@@ -7,7 +7,6 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import android.os.SystemClock
 import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_FOR_CLEAR
-import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_MILLIS
 
 @Dao
 interface VideoDao {
@@ -18,8 +17,8 @@ interface VideoDao {
     /**
      * Get videos which are available for all VR devices.
      */
-    @Query("SELECT *, COUNT(*) as count FROM VideoEntity WHERE updated_at > :updateTimeThreshold GROUP BY path HAVING count = (SELECT COUNT(*) FROM DeviceEntity WHERE updated_at > :updateTimeThreshold)")
-    fun query(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_MILLIS): LiveData<List<VideoEntity>>
+    @Query("SELECT *, COUNT(*) as count FROM VideoEntity GROUP BY path HAVING count = (SELECT COUNT(*) FROM DeviceEntity)")
+    fun query(): LiveData<List<VideoEntity>>
 
     /**
      * Delete videos which are not recently updated.

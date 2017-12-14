@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity() {
             MultiLinkUdpMessenger.onReceivePingResponse += { deviceInfo ->
 
                 // Check illegal data and process
-                if (deviceInfo.imei != null) {
-                    processDeviceInfo(deviceInfo)
-                }
+                processDeviceInfo(deviceInfo)
             }
 
             MultiLinkUdpMessenger.ping()

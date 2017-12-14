@@ -7,7 +7,6 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import android.os.SystemClock
 import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_FOR_CLEAR
-import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_MILLIS
 
 @Dao
 interface DeviceDao {
@@ -21,8 +20,8 @@ interface DeviceDao {
     /**
      * Get devices which are recently updated.
      */
-    @Query("SELECT * FROM DeviceEntity WHERE updated_at > :updateTimeThreshold")
-    fun query(updateTimeThreshold: Long = SystemClock.uptimeMillis() - UPDATE_TIME_THRESHOLD_MILLIS): LiveData<List<DeviceEntity>>
+    @Query("SELECT * FROM DeviceEntity")
+    fun query(): LiveData<List<DeviceEntity>>
 
     /**
      * Delete devices which are not recently updated.
