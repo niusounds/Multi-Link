@@ -11,7 +11,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        db = Room.databaseBuilder(this, AppDatabase::class.java, "database").build()
+        db = Room.inMemoryDatabaseBuilder(this, AppDatabase::class.java).build()
     }
 
     companion object {
