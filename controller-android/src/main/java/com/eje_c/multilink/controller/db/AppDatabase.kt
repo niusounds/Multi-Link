@@ -1,4 +1,4 @@
-package com.eje_c.multilink.db
+package com.eje_c.multilink.controller.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase

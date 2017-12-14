@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.eje_c.multilink.data.ControlMessage
-import com.eje_c.multilink.fromExternal
 import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import com.google.vr.sdk.widgets.video.VrVideoEventListener
 import kotlinx.android.synthetic.main.activity_player.*

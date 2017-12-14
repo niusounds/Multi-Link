@@ -1,4 +1,4 @@
-package com.eje_c.multilink
+package com.eje_c.multilink.controller
 
 /**
  * How much old data is retrieved when querying. Unit is milliseconds.

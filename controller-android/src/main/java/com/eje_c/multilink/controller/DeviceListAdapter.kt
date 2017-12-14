@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import com.eje_c.multilink.db.DeviceEntity
+import com.eje_c.multilink.controller.db.DeviceEntity
 
 /**
  * Adapter for [DeviceEntity].

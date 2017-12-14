@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
-import com.eje_c.multilink.db.DeviceEntity
+import com.eje_c.multilink.controller.db.DeviceEntity
 import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Click

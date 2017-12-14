@@ -1,4 +1,4 @@
-package com.eje_c.multilink.db
+package com.eje_c.multilink.controller.db
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
@@ -6,8 +6,8 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import android.os.SystemClock
-import com.eje_c.multilink.UPDATE_TIME_THRESHOLD_FOR_CLEAR
-import com.eje_c.multilink.UPDATE_TIME_THRESHOLD_MILLIS
+import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_FOR_CLEAR
+import com.eje_c.multilink.controller.UPDATE_TIME_THRESHOLD_MILLIS
 
 @Dao
 interface DeviceDao {

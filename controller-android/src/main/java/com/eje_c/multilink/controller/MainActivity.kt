@@ -12,9 +12,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import com.eje_c.multilink.controller.db.DeviceEntity
+import com.eje_c.multilink.controller.db.VideoEntity
 import com.eje_c.multilink.data.DeviceInfo
-import com.eje_c.multilink.db.DeviceEntity
-import com.eje_c.multilink.db.VideoEntity
 import com.eje_c.multilink.udp.MultiLinkUdpMessenger
 import com.eje_c.multilink.udp.UdpSocketService
 import kotlinx.android.synthetic.main.activity_main.*
