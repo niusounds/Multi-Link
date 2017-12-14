@@ -1,7 +1,6 @@
 package com.eje_c.multilink.cardboard
 
-import android.media.MediaPlayer
-
+import com.eje_c.player.Player
 import org.rajawali3d.cameras.Camera
 import org.rajawali3d.materials.Material
 import org.rajawali3d.materials.textures.ATexture
@@ -25,15 +24,12 @@ class VRSphere : Sphere(100f, 128, 64) {
     }
 
     @Throws(ATexture.TextureException::class)
-    fun bindMediaPlayer(player: MediaPlayer) {
+    fun bindMediaPlayer(player: Player) {
 
-        if (streamingTexture != null) {
-            streamingTexture!!.updateMediaPlayer(player)
-        } else {
-            streamingTexture = StreamingTexture("video", player)
-            material.addTexture(streamingTexture)
-        }
+        check(streamingTexture == null)
 
+        streamingTexture = StreamingTexture("video", { surface -> player.setOutput(surface) })
+        material.addTexture(streamingTexture)
     }
 
     override fun render(camera: Camera, vpMatrix: Matrix4, projMatrix: Matrix4, vMatrix: Matrix4, parentMatrix: Matrix4?, sceneMaterial: Material?) {

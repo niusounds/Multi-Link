@@ -1,1 +1,1 @@
-include ':viewer-gearvr', ':viewer-googlevr', ':viewer-common', ':controller-android', ':common-messaging', ':common-json'
+include ':viewer-gearvr', ':viewer-googlevr', ':viewer-common', ':controller-android', ':common-messaging', ':common-json', ':player'

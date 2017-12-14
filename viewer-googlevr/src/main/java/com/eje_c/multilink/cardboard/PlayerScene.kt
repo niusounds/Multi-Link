@@ -12,7 +12,7 @@ import org.rajawali3d.scene.Scene
  */
 class PlayerScene(renderer: Renderer) : Scene(renderer) {
 
-    private val player = BasePlayer()
+    private val player = BasePlayer(renderer.context)
     private var waiting: Object3D
     private var screen: VRSphere
 

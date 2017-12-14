@@ -1,22 +1,26 @@
 package com.eje_c.multilink
 
+import android.content.Context
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import com.eje_c.multilink.data.ControlMessage
+import com.eje_c.player.MediaPlayerImpl
+import com.eje_c.player.Player
 import java.io.File
 
 /**
  * 動画再生を行うシーン。
  */
-class BasePlayer {
+class BasePlayer(context: Context) {
 
     companion object {
         private const val TAG = "PlayerScene"
         private const val SEEK_THRESHOLD = 1000 // コントロールメッセージのpositionプロパティと現在位置がこの値以上離れていたらシークする
     }
 
-    val mediaPlayer = MediaPlayer()
+    val mediaPlayer: Player = MediaPlayerImpl(context, MediaPlayer())
     var currentPath: String? = null
 
     var onStartPlaying: () -> Unit = {}
@@ -25,7 +29,7 @@ class BasePlayer {
 
     init {
         // 再生終了したら待機画面
-        mediaPlayer.setOnCompletionListener {
+        mediaPlayer.onCompletion = {
             hideScreen()
         }
     }
@@ -59,17 +63,17 @@ class BasePlayer {
 
         // 現在位置より一定以上離れた再生位置を受け取ったら、シークする
         if ((Math.abs(mediaPlayer.currentPosition - newControlMessage.position) > SEEK_THRESHOLD)) {
-            seekTo(newControlMessage.position.toInt())
+            seekTo(newControlMessage.position)
         }
     }
 
     /**
      * シークする。
      */
-    private fun seekTo(position: Int) {
+    private fun seekTo(position: Long) {
         Log.d(TAG, "seek to $position ${mediaPlayer.currentPosition}")
 
-        mediaPlayer.seekTo(position)
+        mediaPlayer.currentPosition = position
     }
 
     /**
@@ -86,17 +90,9 @@ class BasePlayer {
         if (waitForFirstFrame) {
 
             // 動画の最初のフレームをレンダリングするタイミングで表示を切り替える
-            mediaPlayer.setOnInfoListener { mediaPlayer, what, extra ->
-
-                when (what) {
-                    MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
-                        showScreen()
-                        mediaPlayer.setOnInfoListener(null)
-                        return@setOnInfoListener true
-                    }
-                }
-
-                return@setOnInfoListener false
+            mediaPlayer.onRenderFirstFrame = {
+                showScreen()
+                mediaPlayer.onRenderFirstFrame = null
             }
 
         } else {
@@ -140,12 +136,10 @@ class BasePlayer {
         this.currentPath = path
 
         // 読み込む
-        mediaPlayer.reset()
-        mediaPlayer.setDataSource(File(Environment.getExternalStorageDirectory(), path).absolutePath)
-        mediaPlayer.prepare()
+        mediaPlayer.load(Uri.fromFile(File(Environment.getExternalStorageDirectory(), path)))
 
         // 最初のフレームをデコードしてすぐ再生できるようにする
-        mediaPlayer.seekTo(0)
+        mediaPlayer.currentPosition = 0
 
         onLoaded(path)
     }

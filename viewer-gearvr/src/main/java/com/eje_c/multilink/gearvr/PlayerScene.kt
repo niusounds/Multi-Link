@@ -11,7 +11,7 @@ import org.meganekkovr.SurfaceRendererComponent
  */
 class PlayerScene : Scene() {
 
-    private val player = BasePlayer()
+    private lateinit var player: BasePlayer
     private lateinit var waiting: Entity
     private lateinit var screen: Entity
 
@@ -21,6 +21,8 @@ class PlayerScene : Scene() {
     override fun init() {
         super.init()
 
+        player = BasePlayer(app.context)
+
         // Get Entity
         waiting = findById(R.id.waiting)!!
         screen = findById(R.id.screen)!!
@@ -29,7 +31,7 @@ class PlayerScene : Scene() {
         val surfaceRenderer = SurfaceRendererComponent()
         surfaceRenderer.setContinuousUpdate(true)
         screen.add(surfaceRenderer)
-        player.mediaPlayer.setSurface(surfaceRenderer.surface)
+        player.mediaPlayer.setOutput(surfaceRenderer.surface)
 
         player.onStartPlaying = {
             screen.isVisible = true
