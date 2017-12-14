@@ -28,7 +28,7 @@ open class DevicesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        App.db.deviceDao().query().observe(this, Observer<List<DeviceEntity>> { data ->
+        App.db.deviceDao.query().observe(this, Observer<List<DeviceEntity>> { data ->
 
             if (data != null) {
 
@@ -46,8 +46,8 @@ open class DevicesFragment : Fragment() {
         thread {
 
             // Clear old data
-            App.db.deviceDao().clear()
-            App.db.videoDao().clear()
+            App.db.deviceDao.clear()
+            App.db.videoDao.clear()
 
             // Query VR device information on network
             MultiLinkUdpMessenger.ping()

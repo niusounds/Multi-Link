@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             name = deviceInfo.name
             updatedAt = now
         }
-        App.db.deviceDao().create(deviceEntity)
+        App.db.deviceDao.create(deviceEntity)
 
         // Save video info to local DB
         deviceInfo.videos.let { videos ->
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            App.db.videoDao().create(videoEntities)
+            App.db.videoDao.create(videoEntities)
         }
     }
 

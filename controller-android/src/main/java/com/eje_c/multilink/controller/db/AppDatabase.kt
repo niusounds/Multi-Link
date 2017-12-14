@@ -9,8 +9,8 @@ import android.arch.persistence.room.RoomDatabase
 @Database(entities = [DeviceEntity::class, VideoEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun deviceDao(): DeviceDao
+    abstract val deviceDao: DeviceDao
 
-    abstract fun videoDao(): VideoDao
+    abstract val videoDao: VideoDao
 
 }

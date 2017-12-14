@@ -25,7 +25,7 @@ open class VideosFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        App.db.videoDao().query().observe(this, Observer<List<VideoEntity>> { data ->
+        App.db.videoDao.query().observe(this, Observer<List<VideoEntity>> { data ->
 
             if (data != null) {
 
