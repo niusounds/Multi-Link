@@ -20,7 +20,8 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val video = list[position]
-        holder.text.text = video.name
+        holder.videoName.text = video.name
+        holder.videoPath.text = video.path
 
         // TODO Needs to be refactored
         holder.itemView.setOnClickListener {
@@ -36,6 +37,7 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent)
 
     class ViewHolder(container: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(container.context).inflate(R.layout.video_list_item, container, false)) {
-        val text: TextView = itemView.findViewById(R.id.text)
+        val videoName: TextView = itemView.findViewById(R.id.videoName)
+        val videoPath: TextView = itemView.findViewById(R.id.videoPath)
     }
 }
