@@ -31,7 +31,7 @@ class PlayerScene : Scene() {
         val surfaceRenderer = SurfaceRendererComponent()
         surfaceRenderer.setContinuousUpdate(true)
         screen.add(surfaceRenderer)
-        player.mediaPlayer.setOutput(surfaceRenderer.surface)
+        player.setSurface(surfaceRenderer.surface)
 
         player.onStartPlaying = {
             screen.isVisible = true
@@ -45,8 +45,7 @@ class PlayerScene : Scene() {
 
         player.onLoaded = {
 
-            // 1:1のサイズならTOP-BOTTOMの3Dとして扱う。そうでなければ2Dとして扱う。
-            if (player.mediaPlayer.videoWidth == player.mediaPlayer.videoHeight) {
+            if (player.isStereo) {
                 screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.TOP_BOTTOM
             } else {
                 screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.NORMAL

@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import android.view.Surface
 import com.eje_c.multilink.data.ControlMessage
 import com.eje_c.player.MediaPlayerImpl
 import com.eje_c.player.Player
@@ -33,6 +34,16 @@ class BasePlayer(context: Context) {
             hideScreen()
         }
     }
+
+    /**
+     * Set output surface from player.
+     */
+    fun setSurface(surface: Surface) {
+        mediaPlayer.setOutput(surface)
+    }
+
+    val isStereo: Boolean
+        get() = mediaPlayer.videoWidth == mediaPlayer.videoHeight
 
     /**
      * プレイヤーの状態を更新する。

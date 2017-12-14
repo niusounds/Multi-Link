@@ -27,7 +27,7 @@ class PlayerScene(renderer: Renderer) : Scene(renderer) {
         screen.isVisible = false
         addChild(screen)
 
-        screen.bindMediaPlayer(player.mediaPlayer)
+        screen.setSurfaceListener({ surface -> player.setSurface(surface) })
 
         player.onStartPlaying = {
             screen.isVisible = true

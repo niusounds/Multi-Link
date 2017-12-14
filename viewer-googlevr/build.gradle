@@ -23,7 +23,6 @@ android {
 dependencies {
     implementation project(':viewer-common')
     implementation project(':common-messaging')
-    implementation project(':player')
 
     implementation 'com.google.vr:sdk-base:1.101.0'
     implementation 'org.rajawali3d:rajawali:1.1.970'

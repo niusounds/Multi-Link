@@ -22,7 +22,6 @@ android {
 dependencies {
     implementation project(':viewer-common')
     implementation project(':common-messaging')
-    implementation project(':player')
 
     implementation 'org.meganekkovr:meganekko:3.2.1'
     implementation 'org.joml:joml:1.9.2'
