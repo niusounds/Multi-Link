@@ -34,7 +34,7 @@ class MainActivity : GvrActivity() {
 
         // レンダリング準備
         val surfaceView = GvrView(this)
-        surfaceView.stereoModeEnabled = false
+        surfaceView.stereoModeEnabled = resources.getBoolean(R.bool.stereoModeEnabled)
         setContentView(surfaceView)
 
         // アプリケーションを作成

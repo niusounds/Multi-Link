@@ -18,6 +18,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'renderingMode'
+    productFlavors {
+        mono {
+            dimension 'renderingMode'
+        }
+        stereo {
+            dimension 'renderingMode'
+        }
+    }
 }
 
 dependencies {
