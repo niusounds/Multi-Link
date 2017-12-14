@@ -18,17 +18,17 @@ object MultiLinkUdpMessenger {
     private lateinit var udpSocket: UdpSocket
 
     /**
-     * Callbacks for ping message { type: 0 }
+     * Callbacks for ping message { type: Message.TYPE_PING }
      */
     val onReceivePing = mutableSetOf<(SocketAddress) -> Unit>()
 
     /**
-     * Callback for ping result { type: 0, data: { ... } }
+     * Callback for ping result { type: Message.TYPE_PING, data: { ... } }
      */
     val onReceivePingResponse = mutableSetOf<(DeviceInfo) -> Unit>()
 
     /**
-     * Callback for control message { type: 1, data: { ... } }
+     * Callback for control message { type: Message.TYPE_CONTROL_MESSAGE, data: { ... } }
      */
     val onReceiveControlMessage = mutableSetOf<(ControlMessage) -> Unit>()
 
@@ -54,8 +54,8 @@ object MultiLinkUdpMessenger {
             val json = JSONObject(str)
 
             when (json.getInt("type")) {
-            // Ping result
-                0 -> {
+
+                Message.TYPE_PING -> {
                     if (json.has("data")) {
                         val deviceInfo = JSON.parse<DeviceInfo>(json.getJSONObject("data").toString())
                         onReceivePingResponse.forEach { it(deviceInfo) }
@@ -63,8 +63,8 @@ object MultiLinkUdpMessenger {
                         onReceivePing.forEach { it(remote) }
                     }
                 }
-            // Control message
-                1 -> {
+
+                Message.TYPE_CONTROL_MESSAGE -> {
                     if (json.has("data")) {
                         val controlMessage = JSON.parse<ControlMessage>(json.getJSONObject("data").toString())
                         onReceiveControlMessage.forEach { it(controlMessage) }
@@ -79,7 +79,7 @@ object MultiLinkUdpMessenger {
      */
     fun ping() {
 
-        val data = Message(type = 0).serialize()
+        val data = Message(type = Message.TYPE_PING).serialize()
 
         udpSocket.broadcast(data, broadcastPort)
     }
@@ -89,7 +89,7 @@ object MultiLinkUdpMessenger {
      */
     fun sendDeviceInfo(deviceInfo: DeviceInfo, remote: SocketAddress) {
 
-        val message = Message(0, deviceInfo).serialize()
+        val message = Message(Message.TYPE_PING, deviceInfo).serialize()
 
         udpSocket.send(message, remote)
     }
@@ -99,7 +99,7 @@ object MultiLinkUdpMessenger {
      */
     fun sendControlMessage(controlMessage: ControlMessage) {
 
-        val data = Message(type = 1, data = controlMessage).serialize()
+        val data = Message(type = Message.TYPE_CONTROL_MESSAGE, data = controlMessage).serialize()
 
         udpSocket.broadcast(data, broadcastPort)
     }
