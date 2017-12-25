@@ -50,7 +50,7 @@ class DeviceInfo(val imei: String, val name: String, val videos: List<VideoInfo>
                 return cursor.map {
 
                     val width = getInt(3)
-                    val height = getInt(3)
+                    val height = getInt(4)
 
                     // 2:1 または 1:1 の動画のみフィルタリング
                     if (width == height * 2 || width == height) {
