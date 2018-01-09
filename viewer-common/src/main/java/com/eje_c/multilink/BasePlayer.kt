@@ -6,53 +6,30 @@ import android.os.Environment
 import android.util.Log
 import android.view.Surface
 import com.eje_c.multilink.data.ControlMessage
-import com.eje_c.player.ExoPlayerImpl
 import com.eje_c.player.Player
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.audio.AudioProcessor
-import com.google.android.exoplayer2.ext.gvr.GvrAudioProcessor
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import java.io.File
 
 /**
  * 動画再生を行うシーン。
  */
-class BasePlayer(context: Context) {
+class BasePlayer(private val mediaPlayer: Player) {
 
     companion object {
         private const val TAG = "PlayerScene"
         private const val SEEK_THRESHOLD = 1000 // コントロールメッセージのpositionプロパティと現在位置がこの値以上離れていたらシークする
     }
 
-    private val mediaPlayer: Player
     private var currentPath: String? = null
-    private val gvrAudioProcessor = GvrAudioProcessor()
 
     var onStartPlaying: () -> Unit = {}
     var onStopPlaying: () -> Unit = {}
     var onLoaded: (String) -> Unit = {}
 
     init {
-        val renderersFactory = object : DefaultRenderersFactory(context) {
-            override fun buildAudioProcessors(): Array<AudioProcessor> {
-                return arrayOf(gvrAudioProcessor)
-            }
-        }
-        val exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, DefaultTrackSelector())
-        mediaPlayer = ExoPlayerImpl(context, exoPlayer)
-
         // 再生終了したら待機画面
         mediaPlayer.onCompletion = {
             hideScreen()
         }
-    }
-
-    /**
-     * Must be called in every frame update.
-     */
-    fun updateHeadOrientation(w: Float, x: Float, y: Float, z: Float) {
-        gvrAudioProcessor.updateOrientation(w, x, y, z)
     }
 
     /**

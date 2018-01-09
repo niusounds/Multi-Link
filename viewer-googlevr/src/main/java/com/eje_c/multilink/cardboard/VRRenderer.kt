@@ -24,7 +24,6 @@ import com.google.vr.sdk.base.HeadTransform
 import com.google.vr.sdk.base.Viewport
 import org.rajawali3d.math.Matrix4
 import org.rajawali3d.renderer.Renderer
-import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
 
 /**
@@ -38,7 +37,6 @@ abstract class VRRenderer(context: Context) : Renderer(context), GvrView.StereoR
     private val projectionMatrix = Matrix4()
     private var ellapsedRealtime: Long = 0
     private var deltaTime: Double = 0.toDouble()
-    private val commands = ArrayDeque<() -> Unit>()
 
     override fun initScene() {
         init()
@@ -47,16 +45,7 @@ abstract class VRRenderer(context: Context) : Renderer(context), GvrView.StereoR
     abstract fun init()
 
     override fun onNewFrame(headTransform: HeadTransform) {
-
-        while (commands.isNotEmpty()) {
-            commands.poll().invoke()
-        }
-
         super.onRenderFrame(null)
-    }
-
-    fun runOnGlThread(command: () -> Unit) {
-        commands.push(command)
     }
 
     override fun onRender(ellapsedRealtime: Long, deltaTime: Double) {

@@ -1,33 +1,23 @@
 package com.eje_c.multilink.gearvr
 
 import com.eje_c.multilink.BasePlayer
-import com.eje_c.multilink.data.ControlMessage
-import org.meganekkovr.*
+import org.meganekkovr.Entity
+import org.meganekkovr.Scene
+import org.meganekkovr.SurfaceRendererComponent
 
 /**
  * 動画再生を行うシーン。
  */
 class PlayerScene : Scene() {
 
-    private lateinit var player: BasePlayer
     private lateinit var waiting: Entity
     private lateinit var screen: Entity
 
-    /**
-     * シーンの初期化を行う。
-     */
-    override fun init() {
-        super.init()
+    var player: BasePlayer? = null
+        set(player) {
+            field = player
 
-        // Get Entity
-        waiting = findById(R.id.waiting)!!
-        screen = findById(R.id.screen)!!
-
-        // BasePlayer must be created in main thread
-        app.runOnUiThread {
-            player = BasePlayer(app.context)
-
-            app.runOnGlThread {
+            if (player != null) {
 
                 player.onStartPlaying = {
                     screen.isVisible = true
@@ -56,24 +46,14 @@ class PlayerScene : Scene() {
             }
         }
 
-    }
-
-    override fun update(frame: FrameInput) {
-
-        if (this::player.isInitialized) {
-            val headOrientation = HeadTransform.getInstance().quaternion
-            player.updateHeadOrientation(headOrientation.w, headOrientation.x, headOrientation.y, headOrientation.z)
-        }
-
-        super.update(frame)
-    }
-
     /**
-     * プレイヤーの状態を更新する。
+     * シーンの初期化を行う。
      */
-    fun updateState(newControlMessage: ControlMessage) {
-        if (this::player.isInitialized) {
-            player.updateState(newControlMessage)
-        }
+    override fun init() {
+        super.init()
+
+        // Get Entity
+        waiting = findById(R.id.waiting)!!
+        screen = findById(R.id.screen)!!
     }
 }
