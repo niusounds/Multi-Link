@@ -113,7 +113,9 @@ class ExoPlayerImpl(
     override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {}
     override fun onPlayerError(error: ExoPlaybackException?) {}
     override fun onLoadingChanged(isLoading: Boolean) {}
-    override fun onPositionDiscontinuity() {}
+    override fun onPositionDiscontinuity(reason: Int) {}
     override fun onRepeatModeChanged(repeatMode: Int) {}
     override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {}
+    override fun onSeekProcessed() {}
+    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
 }

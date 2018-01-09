@@ -21,42 +21,51 @@ class PlayerScene : Scene() {
     override fun init() {
         super.init()
 
-        player = BasePlayer(app.context)
-
         // Get Entity
         waiting = findById(R.id.waiting)!!
         screen = findById(R.id.screen)!!
 
-        // シーン中の球にMediaPlayerの映像を送るようにする
-        val surfaceRenderer = SurfaceRendererComponent()
-        surfaceRenderer.setContinuousUpdate(true)
-        screen.add(surfaceRenderer)
-        player.setSurface(surfaceRenderer.surface)
+        // BasePlayer must be created in main thread
+        app.runOnUiThread {
+            player = BasePlayer(app.context)
 
-        player.onStartPlaying = {
-            screen.isVisible = true
-            waiting.isVisible = false
-        }
+            app.runOnGlThread {
 
-        player.onStopPlaying = {
-            screen.isVisible = false
-            waiting.isVisible = true
-        }
+                player.onStartPlaying = {
+                    screen.isVisible = true
+                    waiting.isVisible = false
+                }
 
-        player.onLoaded = {
+                player.onStopPlaying = {
+                    screen.isVisible = false
+                    waiting.isVisible = true
+                }
 
-            if (player.isStereo) {
-                screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.TOP_BOTTOM
-            } else {
-                screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.NORMAL
+                player.onLoaded = {
+
+                    if (player.isStereo) {
+                        screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.TOP_BOTTOM
+                    } else {
+                        screen.getComponent(SurfaceRendererComponent::class.java).stereoMode = SurfaceRendererComponent.StereoMode.NORMAL
+                    }
+                }
+
+                // シーン中の球にMediaPlayerの映像を送るようにする
+                val surfaceRenderer = SurfaceRendererComponent()
+                surfaceRenderer.setContinuousUpdate(true)
+                screen.add(surfaceRenderer)
+                player.setSurface(surfaceRenderer.surface)
             }
         }
+
     }
 
     /**
      * プレイヤーの状態を更新する。
      */
     fun updateState(newControlMessage: ControlMessage) {
-        player.updateState(newControlMessage)
+        if (this::player.isInitialized) {
+            player.updateState(newControlMessage)
+        }
     }
 }

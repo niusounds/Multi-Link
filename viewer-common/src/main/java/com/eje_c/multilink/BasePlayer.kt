@@ -1,14 +1,15 @@
 package com.eje_c.multilink
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.view.Surface
 import com.eje_c.multilink.data.ControlMessage
-import com.eje_c.player.MediaPlayerImpl
+import com.eje_c.player.ExoPlayerImpl
 import com.eje_c.player.Player
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import java.io.File
 
 /**
@@ -21,7 +22,7 @@ class BasePlayer(context: Context) {
         private const val SEEK_THRESHOLD = 1000 // コントロールメッセージのpositionプロパティと現在位置がこの値以上離れていたらシークする
     }
 
-    private val mediaPlayer: Player = MediaPlayerImpl(context, MediaPlayer())
+    private val mediaPlayer: Player
     private var currentPath: String? = null
 
     var onStartPlaying: () -> Unit = {}
@@ -29,6 +30,9 @@ class BasePlayer(context: Context) {
     var onLoaded: (String) -> Unit = {}
 
     init {
+        val exoPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+        mediaPlayer = ExoPlayerImpl(context, exoPlayer)
+
         // 再生終了したら待機画面
         mediaPlayer.onCompletion = {
             hideScreen()
