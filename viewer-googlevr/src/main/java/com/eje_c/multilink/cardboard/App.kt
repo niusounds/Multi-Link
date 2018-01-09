@@ -32,6 +32,7 @@ class App(context: Context) : VRRenderer(context), IMain {
         // ヘッドトラッキング情報の送信
         headTransform.getQuaternion(quaternion, 0)
         app.updateHeadOrientation(quaternion[0], quaternion[1], quaternion[2], quaternion[3])
+        playerScene.updateHeadOrientation(quaternion[3], quaternion[0], quaternion[1], quaternion[2])
 
         super.onNewFrame(headTransform)
     }

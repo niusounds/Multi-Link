@@ -11,5 +11,6 @@ android {
 dependencies {
     implementation project(':common-messaging')
     implementation project(':player')
+    implementation 'com.google.android.exoplayer:extension-gvr:2.6.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

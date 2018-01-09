@@ -41,6 +41,13 @@ class PlayerScene(renderer: Renderer) : Scene(renderer) {
     }
 
     /**
+     * Must be called in every frame update.
+     */
+    fun updateHeadOrientation(w: Float, x: Float, y: Float, z: Float) {
+        player.updateHeadOrientation(w, x, y, z)
+    }
+
+    /**
      * プレイヤーの状態を更新する。
      */
     fun updateState(newControlMessage: ControlMessage) {

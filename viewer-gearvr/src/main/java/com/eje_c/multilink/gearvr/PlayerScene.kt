@@ -2,9 +2,7 @@ package com.eje_c.multilink.gearvr
 
 import com.eje_c.multilink.BasePlayer
 import com.eje_c.multilink.data.ControlMessage
-import org.meganekkovr.Entity
-import org.meganekkovr.Scene
-import org.meganekkovr.SurfaceRendererComponent
+import org.meganekkovr.*
 
 /**
  * 動画再生を行うシーン。
@@ -58,6 +56,16 @@ class PlayerScene : Scene() {
             }
         }
 
+    }
+
+    override fun update(frame: FrameInput) {
+
+        if (this::player.isInitialized) {
+            val headOrientation = HeadTransform.getInstance().quaternion
+            player.updateHeadOrientation(headOrientation.w, headOrientation.x, headOrientation.y, headOrientation.z)
+        }
+
+        super.update(frame)
     }
 
     /**
