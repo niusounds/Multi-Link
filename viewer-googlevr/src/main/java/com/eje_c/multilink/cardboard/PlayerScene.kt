@@ -1,8 +1,6 @@
 package com.eje_c.multilink.cardboard
 
 import com.eje_c.multilink.BasePlayer
-import com.eje_c.multilink.data.ControlMessage
-import org.rajawali3d.Object3D
 import org.rajawali3d.math.vector.Vector3
 import org.rajawali3d.renderer.Renderer
 import org.rajawali3d.scene.Scene
@@ -10,20 +8,17 @@ import org.rajawali3d.scene.Scene
 /**
  * 動画再生を行うシーン。
  */
-class PlayerScene(renderer: Renderer) : Scene(renderer) {
-
-    private val player = BasePlayer(renderer.context)
-    private var waiting: Object3D
-    private var screen: VRSphere
+class PlayerScene(renderer: Renderer, player: BasePlayer) : Scene(renderer) {
 
     /**
      * シーンの初期化を行う。
      */
     init {
-        waiting = ViewUtil.toObject3D(mRenderer.context, R.layout.waiting, "waiting")
+        val waiting = ViewUtil.toObject3D(mRenderer.context, R.layout.waiting, "waiting")
         waiting.position = Vector3(0.0, 0.0, -10.0)
         addChild(waiting)
-        screen = VRSphere()
+
+        val screen = VRSphere()
         screen.isVisible = false
         addChild(screen)
 
@@ -38,19 +33,5 @@ class PlayerScene(renderer: Renderer) : Scene(renderer) {
             screen.isVisible = false
             waiting.isVisible = true
         }
-    }
-
-    /**
-     * Must be called in every frame update.
-     */
-    fun updateHeadOrientation(w: Float, x: Float, y: Float, z: Float) {
-        player.updateHeadOrientation(w, x, y, z)
-    }
-
-    /**
-     * プレイヤーの状態を更新する。
-     */
-    fun updateState(newControlMessage: ControlMessage) {
-        player.updateState(newControlMessage)
     }
 }

@@ -1,14 +1,12 @@
 package com.eje_c.multilink.cardboard
 
 import android.content.Context
-import com.eje_c.multilink.IMain
 import com.eje_c.multilink.MultiLinkApp
-import com.eje_c.multilink.data.ControlMessage
 import com.google.vr.sdk.base.HeadTransform
 
-class App(context: Context) : VRRenderer(context), IMain {
+class App(context: Context) : VRRenderer(context) {
 
-    private lateinit var app: MultiLinkApp
+    private val app = MultiLinkApp(context)
     private lateinit var playerScene: PlayerScene
     private val quaternion = FloatArray(4)
 
@@ -17,10 +15,8 @@ class App(context: Context) : VRRenderer(context), IMain {
      */
     override fun init() {
 
-        app = MultiLinkApp(context, this)
-
         // シーンを作成
-        playerScene = PlayerScene(this)
+        playerScene = PlayerScene(this, app.player)
         addAndSwitchScene(playerScene)
     }
 
@@ -32,12 +28,7 @@ class App(context: Context) : VRRenderer(context), IMain {
         // ヘッドトラッキング情報の送信
         headTransform.getQuaternion(quaternion, 0)
         app.updateHeadOrientation(quaternion[0], quaternion[1], quaternion[2], quaternion[3])
-        playerScene.updateHeadOrientation(quaternion[3], quaternion[0], quaternion[1], quaternion[2])
 
         super.onNewFrame(headTransform)
-    }
-
-    override fun updateState(controlMessage: ControlMessage) {
-        playerScene.updateState(controlMessage)
     }
 }

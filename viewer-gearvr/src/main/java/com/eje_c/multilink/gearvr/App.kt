@@ -1,8 +1,7 @@
 package com.eje_c.multilink.gearvr
 
-import com.eje_c.multilink.IMain
+import android.content.Context
 import com.eje_c.multilink.MultiLinkApp
-import com.eje_c.multilink.data.ControlMessage
 import org.meganekkovr.FrameInput
 import org.meganekkovr.HeadTransform
 import org.meganekkovr.MeganekkoApp
@@ -10,9 +9,9 @@ import org.meganekkovr.MeganekkoApp
 /**
  * アプリケーションのメインクラス。
  */
-class App : MeganekkoApp(), IMain {
+class App(context: Context) : MeganekkoApp() {
 
-    private lateinit var app: MultiLinkApp
+    private val app = MultiLinkApp(context)
     private lateinit var playerScene: PlayerScene
 
     /**
@@ -21,10 +20,9 @@ class App : MeganekkoApp(), IMain {
     override fun init() {
         super.init()
 
-        app = MultiLinkApp(context, this)
-
         // シーンを読み込む
         playerScene = setSceneFromXml(R.xml.scene) as PlayerScene
+        playerScene.player = app.player
     }
 
     /**
@@ -37,11 +35,5 @@ class App : MeganekkoApp(), IMain {
         app.updateHeadOrientation(quaternion.x, quaternion.y, quaternion.z, quaternion.w)
 
         super.update(frame)
-    }
-
-    override fun runOnGlThread(command: () -> Unit) = super.runOnGlThread(command)
-
-    override fun updateState(controlMessage: ControlMessage) {
-        playerScene.updateState(controlMessage)
     }
 }

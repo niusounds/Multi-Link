@@ -55,10 +55,6 @@ abstract class VRRenderer(context: Context) : Renderer(context), GvrView.StereoR
         super.onRenderFrame(null)
     }
 
-    fun runOnGlThread(command: () -> Unit) {
-        commands.push(command)
-    }
-
     override fun onRender(ellapsedRealtime: Long, deltaTime: Double) {
         this.ellapsedRealtime = ellapsedRealtime
         this.deltaTime = deltaTime
